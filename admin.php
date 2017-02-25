@@ -9,6 +9,7 @@
     include_once "include/service/export_homework_service.php";
     include_once "include/service/query_homework_service.php";
     include_once "include/module/assignments_module.php";
+    include_once "include/service/assignments_service.php";
 
     $sessionService = new SessionService(Web::GetCurrentPage());
     $sessionService->Run();
@@ -35,12 +36,20 @@
         $downloadService_4_queryhomework->Run();
     }
 
-    //3. download for assignment download
+    //3. download for assignment
     $assignDir = Configure::$ASSIGNMENTDIR;
-    $downloadService_4_assigments = new DownloadService(AssignmentsModule::GetDownloadButton(),
-                                                        AssignmentsModule::GetFileName(),
-                                                        $assignDir);
+    $downloadService_4_assigments = new AssignmentsDownloadService(AssignmentsModule::GetDownloadButton(),
+                                                                   AssignmentsModule::GetFileName(),
+                                                                   $assignDir);
     $downloadService_4_assigments->Run();
+
+    //4. delete for assignment
+    $assignmentDir = Configure::$ASSIGNMENTDIR;
+    //delete service
+    $deleteService_4_assignment = new AssignmentsDeleteService(AssignmentsModule::GetDeleteButton(),
+                                                               AssignmentsModule::GetFileName(),
+                                                               $assignmentDir);
+    $deleteService_4_assignment_result = $deleteService_4_assignment->Run();
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,13 +59,14 @@
 
     <!-- stylesheets -->
     <link href="css/style.css" rel='stylesheet' type='text/css' />
-    <link href="css/TW.css" rel="stylesheet" type='text/css'>
-    <link href="css/OS.css" rel='stylesheet' type='text/css'>
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="css/font_icon/css/pe-icon-7-stroke.css" rel="stylesheet"  type='text/css'/>
     <link href="css/font_icon/css/helper.css" rel="stylesheet" type='text/css'/>
     <link href="css/discuss_board.css" rel='stylesheet' type='text/css' />
     <link href="css/user_manager.css" rel='stylesheet' type='text/css' />
+    <link href="css/OS.css" rel='stylesheet' type='text/css' />
+    <link href="css/TW.css" rel='stylesheet' type='text/css' />
+    <link href="css/googleFont.css" rel='stylesheet' type='text/css' />
 
     <!-- emoji -->
     <link rel="stylesheet" href="css/emoji.css" type='text/css'/>
@@ -65,7 +75,6 @@
     <link href="css/button.css" rel='stylesheet' type='text/css'>
 
     <!--webfonts-->
-    <link href='css/googleapis.css' rel='stylesheet' type='text/css'>
     <link href='css/italic.css' rel='stylesheet' type='text/css'>
 
     <!--//webfonts-->
@@ -78,6 +87,10 @@
     <script src="js/ajax.js" type="text/javascript"></script>
     <script src="js/slow_move.js" type="text/javascript"></script>
     <script src="js/discuss_board.js" type="text/javascript"></script>
+    <script src="js/browser.js" type="text/javascript"></script>
+    <script>
+        getOs();
+    </script>
     <?php
         include_once "include/service/discuss_board_js_service.php";
         Log::RawEcho("<!-- Ajax -->\n");
@@ -91,7 +104,7 @@
     <div class="header">
         <div class="container">
             <div class="header-logo">
-                <h1><a href="<?php Log::RawEcho(Web::GetLoginPage()); ?>">Visg</a></h1>
+                <h1>VISG</h1>
             </div>
             <div class="top-nav">
                 <ul class="nav1">
@@ -120,14 +133,16 @@
                             <?php
                                 include_once "include/module/distribute_module.php";
                                 include_once "include/service/upload_service.php";
+                                include_once "include/service/distribute_service.php";
                                 Log::RawEcho("<!-- Distribute Module -->\n");
-                                //start up upload service
+                                //start up distribute service
                                 $saveDir = Configure::$ASSIGNMENTDIR;
-                                $uploadService = new UploadService(DistributeModule::GetUploadButton(),
-                                                                   DistributeModule::GetFileName(),
-                                                                   DistributeModule::GetSaveFileName(),
-                                                                   $saveDir);
-                                if ( $uploadService->Run() ) {
+                                $distributeService = new DistributeService($user->GetId(),
+                                                                           DistributeModule::GetUploadButton(),
+                                                                           DistributeModule::GetFileName(),
+                                                                           DistributeModule::GetSaveFileName(),
+                                                                           $saveDir);
+                                if ( $distributeService->run() ) {
                                     Log::Echo2Web("<p>Upload success</p>");
                                 }
                                 //display the form
@@ -200,11 +215,7 @@
                             include_once "include/service/delete_service.php";
                             Log::RawEcho("<!-- Assignments Module -->\n");
                             $assignmentDir = Configure::$ASSIGNMENTDIR;
-                            //delete service
-                            $deleteService_4_assignment = new DeleteService(AssignmentsModule::GetDeleteButton(),
-                                                                            AssignmentsModule::GetFileName(),
-                                                                            $assignmentDir);
-                            if ( true == $deleteService_4_assignment->Run() ) {
+                            if ( true == $deleteService_4_assignment_result ) {
                                 Log::Echo2Web("<p>Delete File success.</p>");
                             }
                             $assignmentsModule = new AssignmentsModule(24, $assignmentDir, $user);
@@ -284,7 +295,8 @@
                         $deleteUserModule = new DeleteUserModule(20);
                         $deleteUserModule->Display();
                         //service
-                        $deleteUserService = new DeleteUserService(DeleteUserModule::GetDeleteUserButton(),
+                        $deleteUserService = new DeleteUserService($user,
+                                                                   DeleteUserModule::GetDeleteUserButton(),
                                                                    DeleteUserModule::GetUserId());
                         if ( true == $deleteUserService->Run() ) {
                             Log::Echo2Web("Delete user success");

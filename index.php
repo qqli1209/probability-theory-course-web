@@ -11,20 +11,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Course Web</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <!-- stylesheets -->
-    <link rel='stylesheet' href="css/screen.css" type='text/css' />
-    <!--[if IE]> 
-        <link rel='stylesheet' href="css/ie.css" type='text/css' />
-    <![endif]-->
+    <link rel='stylesheet' href="css/bootstrap.css" type='text/css' />
+    <link rel='stylesheet' href="css/style.css" type='text/css' />
+    <link rel="stylesheet" href="css/font_icon/css/pe-icon-7-stroke.css" type='text/css'/>
+    <link rel="stylesheet" href="css/font_icon/css/helper.css" type='text/css'/>
+    <link rel='stylesheet' href="css/style_animate_part.css" type='text/css' />
+    <link rel="stylesheet" href="font_icon/css/pe-icon-7-stroke.css" type='text/css'/>
+    <link rel="stylesheet" href="font_icon/css/helper.css" type='text/css'/>
+    <link rel="stylesheet" href="css/owl.carousel.css" type='text/css'/>
+    <link rel="stylesheet" href="css/owl.theme.css" type='text/css'/>
+    <link rel="stylesheet" href="css/animate.css" type='text/css'/>
+    <link rel="stylesheet" href="css/OS.css" type='text/css'/>
+    <link rel="stylesheet" href="css/TW.css" type='text/css'/>
+    <link rel="stylesheet" href="css/googleFont.css" type='text/css'/>
+    <!-- <link rel="stylesheet" href="css/style_contact.css" type='text/css'/> -->
+
+    <!-- emoji -->
+    <link rel="stylesheet" href="css/emoji.css" type='text/css'/>
 
     <!-- scripts-->
     <script src="js/jquery-2.1.3.min.js" type="text/javascript"></script>
     <script src="js/modernizr.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- <script src="js/googleAPI.js" type="text/javascript"></script> -->
     <script src="js/move-top.js" type="text/javascript"></script>
     <script src="js/easing.js" type="text/javascript"></script>
     <script src="js/interactive.js" type="text/javascript"></script>
@@ -34,15 +48,18 @@
     <script src="js/owl.carousel.js" type="text/javascript"></script>
     <script src="js/script.js" type="text/javascript"></script>
     <script src="js/slow_move.js" type="text/javascript"></script>
-    <!-- baidu map API -->
+    <script src="js/browser.js" type="text/javascript"></script>
     <script type="text/javascript" src = "http://webapi.amap.com/maps?v=1.3&key=e36412affa2229780f8d052a3249de45"></script>
+    <script>
+        getOs();
+    </script>
 </head>
 
 <body>
 <div class="header">
     <div class="container">
         <div class="header-logo">
-            <h1><a href="<?php Log::RawEcho(Web::GetLoginPage()); ?>">Visg</a></h1>
+            <h1><a href="<?php Log::RawEcho(Web::GetLoginPage()); ?>">VISG</a></h1>
         </div>
         <div class="top-nav">
             <ul class="nav1">
@@ -169,7 +186,7 @@
     <div>
         <div class="moreDetails">
             <h2 class="con-title">Contact Us</h2>
-            <p>Authors: <?php Log::RawEcho(Configure::$AUTHORS); ?></p>
+            <p>Teaching Assistant: Binbin Song, Li Shi, Jie Fang, Siyuan Bei</p>
             <ul class="address">
                 <li>
                     <i class="pe-7s-map-marker"></i>
@@ -196,6 +213,7 @@
                     </span>
                 </li>
             </ul>
+            <p>Website Authors: <?php Log::RawEcho(Configure::$AUTHORS); ?></p>
         </div><!-- moreDetails -->
     </div><!-- row -->
 </div><!-- container -->

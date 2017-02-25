@@ -6,6 +6,7 @@
     include_once "include/module/homework_list_module.php";
     include_once "include/service/download_service.php";
     include_once "include/module/assignments_module.php";
+    include_once "include/service/assignments_service.php";
 
     $sessionService = new SessionService(Web::GetCurrentPage());
     $sessionService->Run();
@@ -24,9 +25,9 @@
     $downloadService_4_homeworlist->Run();
     //2. assignment download
     $assignDir = Configure::$ASSIGNMENTDIR;
-    $downloadService_4_assigments = new DownloadService(AssignmentsModule::GetDownloadButton(),
-                                                        AssignmentsModule::GetFileName(),
-                                                        $assignDir);
+    $downloadService_4_assigments = new AssignmentsDownloadService(AssignmentsModule::GetDownloadButton(),
+                                                                   AssignmentsModule::GetFileName(),
+                                                                   $assignDir);
     $downloadService_4_assigments->Run();
 ?>
 <!DOCTYPE html>
@@ -37,12 +38,13 @@
 
     <!-- stylesheets -->
     <link href="css/style.css" rel='stylesheet' type='text/css' />
-    <link href="css/TW.css" rel="stylesheet" type='text/css'>
-    <link href="css/OS.css" rel='stylesheet' type='text/css'>
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="css/font_icon/css/pe-icon-7-stroke.css" rel="stylesheet"  type='text/css'/>
     <link href="css/font_icon/css/helper.css" rel="stylesheet" type='text/css'/>
     <link href="css/discuss_board.css" rel='stylesheet' type='text/css' />
+    <link href="css/OS.css" rel='stylesheet' type='text/css' />
+    <link href="css/TW.css" rel='stylesheet' type='text/css' />
+    <link href="css/googleFont.css" rel='stylesheet' type='text/css' />
 
     <!-- emoji -->
     <link rel="stylesheet" href="css/emoji.css" type='text/css'/>
@@ -51,7 +53,6 @@
     <link href="css/button.css" rel='stylesheet' type='text/css'>
 
     <!--webfonts-->
-    <link href='css/googleapis.css' rel='stylesheet' type='text/css'>
     <link href='css/italic.css' rel='stylesheet' type='text/css'>
 
     <!--//webfonts-->
@@ -63,6 +64,10 @@
     <script src="js/ajax.js" type="text/javascript"></script>
     <script src="js/slow_move.js" type="text/javascript"></script>
     <script src="js/discuss_board.js" type="text/javascript"></script>
+    <script src="js/browser.js" type="text/javascript"></script>
+    <script>
+        getOs();
+    </script>
     <?php
         include_once "include/service/discuss_board_js_service.php";
         Log::RawEcho("<!-- Ajax -->\n");
@@ -76,12 +81,11 @@
     <div class="header">
         <div class="container">
             <div class="header-logo">
-                <h1><a href="<?php Log::RawEcho(Web::GetLoginPage()); ?>">Visg</a></h1>
+                <h1>VISG</h1>
             </div>
             <div class="top-nav">
                 <ul class="nav1">
                     <span><a href="<?php Log::RawEcho(Web::GetLoginPage()); ?>" class="house"> </a></span>
-                    <li><a href="#"><?php Log::RawEcho($user->GetName()); ?></a></li>
                     <li><a href="#submit" id="askSubmit">SUBMIT</a></li>
                     <li><a href="#list" id="askList">LIST</a></li>
                     <li><a href="#assignments" id="askAssignments">ASSIGNMENTS</a></li>
